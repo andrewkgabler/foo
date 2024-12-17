@@ -18,11 +18,11 @@ async def fetch_all_data():
     accumulated_data: List[TelemetryData] = []
     while token_offset is not None:
         # connection errors are handled by the mock using backoff
-        page = await async_mock_fetch_telemetry_data()
+        page = await async_mock_fetch_telemetry_data(token_offset=token_offset)
         logger.info(f'Fetched with offset {token_offset}')
         accumulated_data.extend(page.data)
         token_offset=page.next_token
-    return token_offset
+    return accumulated_data
 
 
 @pytest.mark.asyncio

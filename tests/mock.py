@@ -67,14 +67,14 @@ async def async_mock_fetch_telemetry_data(token_offset: Optional[int] = 0) -> Pa
 
     # Pagination logic: assume each "page" contains 2 items
     page_size = 2
-    start_index = token_offset * page_size
+    start_index = token_offset
     end_index = start_index + page_size
 
     # Get data for the current page
     data = TELEMETRY_DATA[start_index:end_index]
 
     # Determine the next token; if there are no more pages, it's None
-    next_token = token_offset + 1 if end_index < len(TELEMETRY_DATA) else None
+    next_token = end_index if end_index < len(TELEMETRY_DATA) else None
 
     return PaginatedResponse(next_token=next_token, data=data)
 
