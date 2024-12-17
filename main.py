@@ -28,11 +28,18 @@ class MockConnectionError(Exception):
 # Mock TelemetryData list
 TELEMETRY_DATA = [
     TelemetryData(timestamp="2023-10-01T12:00:00Z", altitude_m=1000, velocity_m=300, temperature_f=85),
+    TelemetryData(timestamp="2023-10-01T12:00:00Z", altitude_m=-1, velocity_m=10, temperature_f=70),
+    # Same timestamp as above
     TelemetryData(timestamp="2023-10-01T12:01:00Z", altitude_m=1100, velocity_m=320, temperature_f=87),
     TelemetryData(timestamp="2023-10-01T12:02:00Z", altitude_m=1200, velocity_m=310, temperature_f=86),
     TelemetryData(timestamp="2023-10-01T12:03:00Z", altitude_m=1150, velocity_m=315, temperature_f=89),
     TelemetryData(timestamp="2023-10-01T12:04:00Z", altitude_m=1300, velocity_m=330, temperature_f=90),
-    # Add more mock data as needed
+    # Additional 5 data points (out-of-sequence timestamps)
+    TelemetryData(timestamp="2023-09-30T11:59:00Z", altitude_m=900, velocity_m=280, temperature_f=80),
+    TelemetryData(timestamp="2023-10-01T12:05:00Z", altitude_m=1400, velocity_m=350, temperature_f=92),
+    TelemetryData(timestamp="2023-10-01T11:58:00Z", altitude_m=800, velocity_m=270, temperature_f=78),
+    TelemetryData(timestamp="2023-10-01T12:06:00Z", altitude_m=1450, velocity_m=360, temperature_f=95),
+    TelemetryData(timestamp="2023-09-30T11:57:00Z", altitude_m=100, velocity_m=50, temperature_f=60),
 ]
 
 
@@ -49,6 +56,9 @@ async def async_mock_fetch_telemetry_data(token_offset: Optional[int] = 0) -> Pa
     Raises:
         MockConnectionError: 10% of the time to simulate a connection failure.
     """
+    # Set token_offset to 0 if it is None
+    token_offset = token_offset or 0
+
     # Introduce a random delay of up to 50ms
     random_delay = random.uniform(0, 0.05)  # Delay in seconds (0 to 50ms)
     await asyncio.sleep(random_delay)
