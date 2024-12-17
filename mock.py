@@ -78,7 +78,8 @@ async def async_mock_fetch_telemetry_data(token_offset: Optional[int] = 0) -> Pa
 
     return PaginatedResponse(next_token=next_token, data=data)
 
-
+# Although this data broadly looks like it follows at least once kafka semantics, things to additionally check that this is true or your data gets fudged up.
+# Checks such as duplicates, duplicates in error, every measurement at a frequency exists, bit flips, signal loss, or malformed data. Timestamps may also have some jitter around the exact desired fractional time.
 TELEMETRY_DATA = [
     TelemetryData(timestamp="2023-10-01T12:00:00Z", altitude_m=1000, velocity_m=300, temperature_f=85),
     TelemetryData(timestamp="2023-10-01T12:00:00Z", altitude_m=-1, velocity_m=10, temperature_f=70),
