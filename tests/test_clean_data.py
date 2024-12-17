@@ -1,13 +1,30 @@
 from datetime import datetime
 import pytest
 from mock import TelemetryData, TELEMETRY_DATA
-from typing import List
+from typing import List, Dict
+
+from enum import Enum
+
+
+class Checks(Enum):
+    TIMESTAMPS_SORTED = 1
+    NO_DUPLICATE_TIMESTAMPS = 2
+    FIXED_FREQUENCY_TIMESTAMPS = 3
+
+
+Assertions = Dict[Checks, bool]
 
 
 # Example classes and function from your context
 class ConditionedTelemetry:
-    def __init__(self, data: List[TelemetryData]):
+    @classmethod
+    def from_telemetry_data(cls, telemetry_data: List[TelemetryData]):
+        assertions: Assertions = {}
+        return cls(telemetry_data, assertions)
+
+    def __init__(self, data: List[TelemetryData], assertions: Assertions):
         self.data: List[TelemetryData] = data
+        self.assertions: Assertions = assertions if assertions else {}
 
 
 def condition_data(telemetry_data: List[TelemetryData], frequency: int = 1):
