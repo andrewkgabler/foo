@@ -9,9 +9,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-# Mock TelemetryData list
-
-
 # Example usage
 async def main():
     all_telemetry_data: List[TelemetryData] = await fetch_all_data()
