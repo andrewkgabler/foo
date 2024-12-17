@@ -1,44 +1,68 @@
+from datetime import datetime
+import pytest
+from mock import TelemetryData, TELEMETRY_DATA
 from typing import List
 
-import pytest
 
-from mock import TelemetryData, TELEMETRY_DATA
-
-
-# Example classes to resemble the implementation
-
-
+# Example classes and function from your context
 class ConditionedTelemetry:
     def __init__(self, data: List[TelemetryData]):
         self.data: List[TelemetryData] = data
 
 
-# Function to be tested
 def condition_data(telemetry_data: List[TelemetryData], frequency: int = 1):
-    """Function to condition telemetry data.
-    :arg telemetry_data : list of TelemetryData objects
-    :arg frequency : in Hz. Values above 1 would need some method of taking rounding fractional seconds t fixed interval seconds
+    """
+    Function to condition telemetry data.
+    :param telemetry_data: List of TelemetryData objects
+    :param frequency: in Hz. Values above 1 would need some method for rounding fractional seconds.
     """
     return ConditionedTelemetry(telemetry_data)
 
 
-# Test
-def test_condition_data():
-    # Mock telemetry data
+# ----------------------
+# Pytest Fixture
+# ----------------------
 
-    # Call the function
-    result: ConditionedTelemetry = condition_data(TELEMETRY_DATA, frequency=1)
 
-    # Extract timestamps and validate
-    timestamps = [data.timestamp for data in result.data]
+@pytest.fixture
+def conditioned_telemetry():
+    """
+    Pytest fixture to prepare the result of condition_data.
+    """
+    return condition_data(TELEMETRY_DATA, frequency=1)
 
-    # Check timestamps are sorted
-    assert timestamps == sorted(timestamps), "Timestamps are not sorted"
 
-    # Check for duplicates
-    assert len(timestamps) == len(set(timestamps)), "Duplicate timestamps found"
+# ----------------------
+# Individual Tests
+# ----------------------
 
-    # Check for fixed-frequency timestamps
-    # todo later
-    # time_difference_seconds = (max_datetime - min_datetime).total_seconds()
-    # assert len(timestamps) == list(range(min(timestamps), max(timestamps) )), "Missing timestamps"
+
+def test_timestamps_sorted(conditioned_telemetry):
+    """
+    Test that timestamps are sorted in ascending order.
+    """
+    timestamps = [data.timestamp for data in conditioned_telemetry.data]
+    assert timestamps == sorted(timestamps), "Timestamps are not sorted."
+
+
+def test_no_duplicate_timestamps(conditioned_telemetry):
+    """
+    Test that there are no duplicate timestamps.
+    """
+    timestamps = [data.timestamp for data in conditioned_telemetry.data]
+    assert len(timestamps) == len(set(timestamps)), "Duplicate timestamps found."
+
+
+def test_fixed_frequency_timestamps(conditioned_telemetry):
+    """
+    Test that timestamps align with the fixed frequency.
+    """
+    # Extract and compute relevant timestamps
+    assert False, "Implement this test."
+    # timestamps = [data.timestamp for data in conditioned_telemetry.data]
+    # min_timestamp = min(timestamps)
+    # max_timestamp = max(timestamps)
+
+    # Compute time difference in seconds
+    # time_difference_seconds = (max_timestamp - min_timestamp).total_seconds()
+    # expected_length = int(time_difference_seconds) +
