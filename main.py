@@ -36,12 +36,12 @@ TELEMETRY_DATA = [
 ]
 
 
-async def async_mock_fetch_telemetry_data(token_offset: int) -> PaginatedResponse:
+async def async_mock_fetch_telemetry_data(token_offset: Optional[int] = 0) -> PaginatedResponse:
     """
     Mock async function to simulate fetching telemetry data from a remote service.
 
     Args:
-        token_offset (int): Offset for pagination to start fetching telemetry data.
+        token_offset (Optional[int]): Offset for pagination to start fetching telemetry data. Defaults to 0.
 
     Returns:
         PaginatedResponse: A paginated response containing the next token and telemetry data.
@@ -73,13 +73,13 @@ async def async_mock_fetch_telemetry_data(token_offset: int) -> PaginatedRespons
 
 # Example usage
 async def main():
-    token_offset = 0
+    token_offset = None  # Start with no token offset
 
     # Loop through pages until there are no more pages
     while True:
         try:
             response = await async_mock_fetch_telemetry_data(token_offset=token_offset)
-            print(f"Page {token_offset + 1}: {response.data}")
+            print(f"Page {token_offset + 1 if token_offset is not None else 1}: {response.data}")
 
             # Check if there's a next token. If not, break the loop.
             if response.next_token is None:
