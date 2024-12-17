@@ -3,6 +3,13 @@ import random
 from dataclasses import dataclass
 from typing import Optional, List
 
+import backoff
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 @dataclass
 class TelemetryData:
@@ -25,6 +32,15 @@ class MockConnectionError(Exception):
     pass
 
 
+# Add a logging function for backoff events
+def log_backoff(details):
+    logger.info(
+        f"Retrying after exception: {details['exception']} "
+        f"(try {details['tries']} of args {details['args']}, "")"
+    )
+
+# backoff supports async/snc and elegant callback loggers on different events
+@backoff.on_exception(backoff.expo, MockConnectionError, max_tries=3,on_backoff=log_backoff)
 async def async_mock_fetch_telemetry_data(token_offset: Optional[int] = 0) -> PaginatedResponse:
     """
     Mock async function to simulate fetching telemetry data from a remote service.
