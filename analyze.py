@@ -25,7 +25,7 @@ fahrenheit_to_celsius = lambda f: (f - 32) * 5.0 / 9.0
 
 def acceleration_series(telemetry: ConditionedTelemetry) -> List[float]:
     return [(data.velocity_m - telemetry.data[index - 1].velocity_m) for index, data in
-            enumerate(telemetry.data)]
+            list(enumerate(telemetry.data))[1:]]
 
 
 def analyze_results(conditioned: ConditionedTelemetry) -> AnalysisResult:
@@ -33,6 +33,7 @@ def analyze_results(conditioned: ConditionedTelemetry) -> AnalysisResult:
     # need to assert different tests are true for different calcs
     # assert [item.name for item in Checks] in conditioned.assertions, "All checks must be set"
     acceleration = acceleration_series(conditioned)
+    print(acceleration)
     return AnalysisResult(
         altitude_m_average=sum(telemetry.altitude_m for telemetry in conditioned.data) / len(conditioned.data),
         altitude_m_max=max(telemetry.altitude_m for telemetry in conditioned.data),

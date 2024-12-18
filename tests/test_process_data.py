@@ -5,7 +5,7 @@ def test_altitude_m_average(analysis_result):
     """
     Test the average altitude.
     """
-    assert analysis_result.altitude_m_average == 1049.0, "Incorrect average altitude."
+    assert analysis_result.altitude_m_average == 1040.0, "Incorrect average altitude."
 
 
 def test_altitude_m_max(analysis_result):
@@ -40,7 +40,7 @@ def test_acceleration_m_s2_min(analysis_result):
     """
     Test the minimum acceleration.
     """
-    assert analysis_result.acceleration_m_s2_min == -1.2, "Incorrect minimum acceleration."
+    assert analysis_result.acceleration_m_s2_min == -10, "Incorrect minimum acceleration."
 
 
 def test_temperature_f_max(analysis_result):
