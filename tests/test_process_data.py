@@ -64,31 +64,57 @@ import unittest
 
 
 
-def test_analyze_data(self):
+def test_analyze_data_instance():
+    """
+    Test that analyze_data() produces an instance of AnalysisResult.
+    """
     result = analyze_data()
+    assert isinstance(result, AnalysisResult), "The returned object is not an instance of AnalysisResult."
 
-    self.assertIsInstance(result, AnalysisResult)
 
-    # Check Engine Temperature
+def test_engine_temperature_values():
+    """
+    Test the engine temperature data.
+    """
+    result = analyze_data()
     engine_temp = result.engine_temperature
-    self.assertEqual(engine_temp[Measure.TEMPERATURE].value, 95.0)
-    self.assertEqual(engine_temp[Measure.TEMPERATURE].units, "C")
-    self.assertEqual(engine_temp[Measure.TEMPERATURE].schema, Schema.METRIC)
 
-    # Check Altitude
+    assert engine_temp[Measure.TEMPERATURE].value == 95.0, "Incorrect engine temperature value."
+    assert engine_temp[Measure.TEMPERATURE].units == "C", "Incorrect engine temperature units."
+    assert engine_temp[Measure.TEMPERATURE].schema == Schema.METRIC, "Incorrect engine temperature schema."
+
+
+def test_altitude_values():
+    """
+    Test the altitude data.
+    """
+    result = analyze_data()
     altitude = result.altitude
-    self.assertEqual(altitude[Measure.PRESSURE].value, 101325.0)
-    self.assertEqual(altitude[Measure.PRESSURE].units, "Pa")
-    self.assertEqual(altitude[Measure.PRESSURE].schema, Schema.METRIC)
 
-    # Check Velocity
+    assert altitude[Measure.PRESSURE].value == 101325.0, "Incorrect altitude pressure value."
+    assert altitude[Measure.PRESSURE].units == "Pa", "Incorrect altitude pressure units."
+    assert altitude[Measure.PRESSURE].schema == Schema.METRIC, "Incorrect altitude schema."
+
+
+def test_velocity_values():
+    """
+    Test the velocity data.
+    """
+    result = analyze_data()
     velocity = result.velocity
-    self.assertEqual(velocity[Measure.SPEED].value, 230.0)
-    self.assertEqual(velocity[Measure.SPEED].units, "km/h")
-    self.assertEqual(velocity[Measure.SPEED].schema, Schema.METRIC)
 
-    # Check Acceleration
+    assert velocity[Measure.SPEED].value == 230.0, "Incorrect velocity value."
+    assert velocity[Measure.SPEED].units == "km/h", "Incorrect velocity units."
+    assert velocity[Measure.SPEED].schema == Schema.METRIC, "Incorrect velocity schema."
+
+
+def test_acceleration_values():
+    """
+    Test the acceleration data.
+    """
+    result = analyze_data()
     acceleration = result.acceleration
-    self.assertEqual(acceleration[Measure.FORCE].value, 9.81)
-    self.assertEqual(acceleration[Measure.FORCE].units, "m/s^2")
-    self.assertEqual(acceleration[Measure.FORCE].schema, Schema.METRIC)
+
+    assert acceleration[Measure.FORCE].value == 9.81, "Incorrect acceleration value."
+    assert acceleration[Measure.FORCE].units == "m/s^2", "Incorrect acceleration units."
+    assert acceleration[Measure.FORCE].schema == Schema.METRIC, "Incorrect acceleration schema."
