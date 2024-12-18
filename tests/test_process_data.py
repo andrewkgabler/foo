@@ -4,6 +4,8 @@ from typing import Optional, Union, List
 
 import pytest
 
+from condition import ConditionedTelemetry
+
 
 class Measure(Enum):
     MAX = 1
@@ -56,11 +58,8 @@ class AnalysisResult:
         return {Measure.FORCE: Result(value=9.81, units="m/s^2", schema=Schema.METRIC)}
 
 
-def analyze_data() -> AnalysisResult:
+def analyze_data(conditioned_data:ConditionedTelemetry) -> AnalysisResult:
     return AnalysisResult()
-
-
-import unittest
 
 
 
