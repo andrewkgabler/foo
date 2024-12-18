@@ -19,6 +19,7 @@ class ConditionedTelemetry:
         assertions: Assertions = {}
         cls._assert_timestamps_sorted(telemetry_data, assertions)
         cls._assert_no_duplicate_timestamps(telemetry_data, assertions)
+        # an advanced algorithm could detect missing timestamps and fill values based on the fourier representations, also could dete4ct bit flipped data, and dead sensors
         return cls(telemetry_data, assertions)
 
     def __init__(self, data: List[TelemetryData], assertions: Assertions):
@@ -36,7 +37,7 @@ class ConditionedTelemetry:
         for item in data:
             if item.timestamp not in filtered_data and item.altitude_m > 0:
                 filtered_data[item.timestamp] = item
-        # Update the data list to only contain the filtered items
+        # Update the data list in place to only contain the filtered items
         data.clear()
         data.extend(filtered_data.values())
         assertions[Checks.NO_DUPLICATE_TIMESTAMPS] = True
