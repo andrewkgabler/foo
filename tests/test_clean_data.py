@@ -1,13 +1,9 @@
-from condition import Checks, condition_data
-from mock import TELEMETRY_DATA
+from condition import Checks
 import pytest
 
-@pytest.fixture
-def conditioned_telemetry():
-    """
-    Pytest fixture to prepare the result of condition_data.
-    """
-    return condition_data(TELEMETRY_DATA, frequency=1)
+from tests.conftest import conditioned_telemetry
+
+
 def test_timestamps_sorted(conditioned_telemetry):
     """
     Test that timestamps are sorted in ascending order.
