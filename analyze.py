@@ -33,7 +33,6 @@ def analyze_results(conditioned: ConditionedTelemetry) -> AnalysisResult:
     # need to assert different tests are true for different calcs
     # assert [item.name for item in Checks] in conditioned.assertions, "All checks must be set"
     acceleration = acceleration_series(conditioned)
-    print(acceleration)
     return AnalysisResult(
         altitude_m_average=sum(telemetry.altitude_m for telemetry in conditioned.data) / len(conditioned.data),
         altitude_m_max=max(telemetry.altitude_m for telemetry in conditioned.data),

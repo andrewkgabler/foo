@@ -10,5 +10,4 @@ def conditioned_telemetry():
     Pytest fixture to prepare the result of condition_data.
     """
     conditioned:ConditionedTelemetry = condition_data(TELEMETRY_DATA, frequency=1)
-    [print(item) for item in conditioned.data]
     return conditioned
