@@ -1,4 +1,4 @@
-from main import conditioned_telemetry
+from main import conditioned_telemetry, Checks
 
 
 def test_timestamps_sorted(conditioned_telemetry):
@@ -7,6 +7,7 @@ def test_timestamps_sorted(conditioned_telemetry):
     """
     timestamps = [data.timestamp for data in conditioned_telemetry.data]
     assert timestamps == sorted(timestamps), "Timestamps are not sorted."
+    assert conditioned_telemetry.assertions[Checks.TIMESTAMPS_SORTED], 'Assertion not set'
 
 
 def test_no_duplicate_timestamps(conditioned_telemetry):
@@ -15,6 +16,7 @@ def test_no_duplicate_timestamps(conditioned_telemetry):
     """
     timestamps = [data.timestamp for data in conditioned_telemetry.data]
     assert len(timestamps) == len(set(timestamps)), "Duplicate timestamps found."
+    assert conditioned_telemetry.assertions[Checks.NO_DUPLICATE_TIMESTAMPS], 'Assertion not set'
 
 
 def test_fixed_frequency_timestamps(conditioned_telemetry):
