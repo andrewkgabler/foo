@@ -1,10 +1,11 @@
 import asyncio
-from typing import List
+from enum import Enum
+from typing import List, Dict
 
-from mock import async_mock_fetch_telemetry_data, TelemetryData
+import pytest
+
+from mock import async_mock_fetch_telemetry_data, TelemetryData, TELEMETRY_DATA
 import logging
-
-from tests.test_clean_data import ConditionedTelemetry, condition_data
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -32,3 +33,46 @@ async def fetch_all_data():
         accumulated_data.extend(page.data)
         token_offset = page.next_token
     return accumulated_data
+
+
+class Checks(Enum):
+    TIMESTAMPS_SORTED = 1
+    NO_DUPLICATE_TIMESTAMPS = 2
+    FIXED_FREQUENCY_TIMESTAMPS = 3
+
+
+Assertions = Dict[Checks, bool]
+
+
+class ConditionedTelemetry:
+    @classmethod
+    def from_telemetry_data(cls, telemetry_data: List[TelemetryData]):
+        assertions: Assertions = {}
+        cls._assert_timestamps_sorted(telemetry_data, assertions)
+        return cls(telemetry_data, assertions)
+
+    def __init__(self, data: List[TelemetryData], assertions: Assertions):
+        self.data: List[TelemetryData] = data
+        self.assertions: Assertions = assertions if assertions else {}
+    @staticmethod
+    def _assert_timestamps_sorted(data: List[TelemetryData],assertions: Assertions):
+        # inplace sort
+        data.sort(key=lambda x: x.timestamp)
+        assertions[Checks.TIMESTAMPS_SORTED] = True
+
+
+def condition_data(telemetry_data: List[TelemetryData], frequency: int = 1):
+    """
+    Function to condition telemetry data.
+    :param telemetry_data: List of TelemetryData objects
+    :param frequency: in Hz. Values above 1 would need some method for rounding fractional seconds.
+    """
+    return ConditionedTelemetry.from_telemetry_data(telemetry_data)
+
+
+@pytest.fixture
+def conditioned_telemetry():
+    """
+    Pytest fixture to prepare the result of condition_data.
+    """
+    return condition_data(TELEMETRY_DATA, frequency=1)
