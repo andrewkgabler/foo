@@ -1,7 +1,7 @@
 import pytest
 import logging
 
-from main import fetch_all_data
+from fetch import fetch_all_data
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
