@@ -32,6 +32,8 @@ def analyze_results(conditioned: ConditionedTelemetry) -> AnalysisResult:
     assert isinstance(conditioned, ConditionedTelemetry), "Data must be conditioned"
     # need to assert different tests are true for different calcs
     # assert [item.name for item in Checks] in conditioned.assertions, "All checks must be set"
+    # ideally results would be values with units which can convert between compatible units as well as carry uncertainties.
+    # these results should be persisted to a store which
     acceleration = acceleration_series(conditioned)
     return AnalysisResult(
         altitude_m_average=sum(telemetry.altitude_m for telemetry in conditioned.data) / len(conditioned.data),
