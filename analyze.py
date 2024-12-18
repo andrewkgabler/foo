@@ -33,7 +33,8 @@ def analyze_results(conditioned: ConditionedTelemetry) -> AnalysisResult:
     # need to assert different tests are true for different calcs
     # assert [item.name for item in Checks] in conditioned.assertions, "All checks must be set"
     # ideally results would be values with units which can convert between compatible units as well as carry uncertainties.
-    # these results should be persisted to a store which
+    # these results should be persisted to a store which supports singular values, arrays, and high dimensional structure as well as the schema of the returned object.
+    # this could also become a full class which can lazy apply conditioning and acessing analysis results. Eg AnalysisResults.engine_temperature.max(TemperatureUnit.Celsius).convert(TemperatureUnit.Fahrenheit)
     acceleration = acceleration_series(conditioned)
     return AnalysisResult(
         altitude_m_average=sum(telemetry.altitude_m for telemetry in conditioned.data) / len(conditioned.data),
