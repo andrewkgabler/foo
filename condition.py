@@ -7,7 +7,7 @@ from mock import TelemetryData
 class Checks(Enum):
     TIMESTAMPS_SORTED = 1
     NO_DUPLICATE_TIMESTAMPS = 2
-    FIXED_FREQUENCY_TIMESTAMPS = 3
+    # FIXED_FREQUENCY_TIMESTAMPS = 3
 
 
 Assertions = Dict[Checks, bool]
